@@ -54,3 +54,72 @@ x<- -3:2
 ```
 
 
+
+
+```{r }
+ages <- c(4, 28, 22, 36, 27, 18, 52, 39, 42, 29, 35, 31, 27,
+22, 37, 34, 19, 20, 57, 49, 50, 37, 46, 25, 17, 37, 43, 53, 41, 51, 35,
+24,33, 41, 53, 40, 18, 44, 38, 41, 48, 27, 39, 19, 30, 61, 54, 58, 26,
+18)
+thirdage <- ages[3]
+print (thirdage)
+```
+
+
+```{r }
+ages <- c(4, 28, 22, 36, 27, 18, 52, 39, 42, 29, 35, 31, 27,
+22, 37, 34, 19, 20, 57, 49, 50, 37, 46, 25, 17, 37, 43, 53, 41, 51, 35,
+24,33, 41, 53, 40, 18, 44, 38, 41, 48, 27, 39, 19, 30, 61, 54, 58, 26,
+18)
+second_and_fourth <- ages[c(2,4)]
+print (second_and_fourth)
+```
+
+```{r }
+ages <- c(4, 28, 22, 36, 27, 18, 52, 39, 42, 29, 35, 31, 27,
+22, 37, 34, 19, 20, 57, 49, 50, 37, 46, 25, 17, 37, 43, 53, 41, 51, 35,
+24,33, 41, 53, 40, 18, 44, 38, 41, 48, 27, 39, 19, 30, 61, 54, 58, 26,
+18)
+all_but_one <- ages[c(2:50)]
+print (all_but_one)
+```
+
+
+```{r }
+x <- c(3, 0, 9)
+names(x) <- c("first", "second", "third")
+x[c("first", "third")]
+```
+
+```{r }
+x <- c(-3:2)
+x[2] <- 0
+x
+```
+
+```{r }
+month <- c("Jan", "Feb", "March", "Apr", "May", "June")
+price <-c(52.50, 57.25, 60.00, 65.00, 74.25, 54.00)
+purchase_Quantity <-c(25, 30, 40, 50, 10, 45)
+
+fuel_purchase <- data.frame(month, price, purchase_Quantity)
+fuel_purchase
+```
+
+```{r }
+average_fuel <- weighted.mean(price, purchase_Quantity)
+average_fuel
+```
+
+
+
+
+```{r }
+data <- c(length(rivers), sum(rivers), mean(rivers), median(rivers), var(rivers), sd(rivers), min(rivers), max(rivers))
+data
+```
+
+
+
+
+
