@@ -8,50 +8,61 @@ output: pdf_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
+##Based on the above vector LETTERS:
+##a. You need to produce a vector that contains the first 11 letters.
 ```{r}
 LETTERS[seq(1, 11, by= 1)]
 ```
-
+##b. Produce a vector that contains the odd numbered letters.
 
 ```{r}
 LETTERS[seq(1,26, by=2)]
 ```
-
+##c. Produce a vector that contains the vowels
 ```{r}
 LETTERS[c(1,5,9,15,21)]
 ```
+##d. Produce a vector that contains the last 5 lowercase letters.
 ```{r}
 letters[seq(22,26,by=1)]
 ```
+##Based on the above vector letters:
 
+##e. Produce a vector that contains letters between 15 to 24 letters in lowercase.
 ```{r}
 letters[seq(15,24,by=1)]
 ```
-
+##a. What is the R code and its result for creating a character vector for the city/town
+##of Tuguegarao City, Manila, Iloilo City, Tacloban,Samal Island, and Davao City? Name the
+##object as city. The names should follow the same order as in the instruction.
 ```{r}
  city <- c("Tuguegarao City", "Manila", "Iloilo City", "Tacloban", "Samal Island", "Davao City")
 print(city)
 ```
-
+##b. The average temperatures in Celcius are 42, 39, 34, 34, 30, and 27 degrees. Name the object as temp. Write the R code and its output. Numbers should also follow what is in the instruction.
 ```{r}
  temp <- c(42, 39, 34, 34, 30, 27)
 print(temp)
 ```
+##c. Create a dataframe to combine the city and the temp by using ‘data.frame(). What the R code and its result?
 ```{r}
 df_temp <- data.frame(city, temp)
 print(df_temp)
 ```
+##d. Associate the dataframe you have created in 2.(c) by naming the columns using the names() function. Change the column names by using names() function as City and Temperature. What is the R code and its result?
 ```{r}
 names(df_temp) <- c("City", "Temperature")
 print(df_temp)
 ```
+##e. Print the structure by using str() function. Describe the output.
 ```{r}
 str(df_temp)
 ```
+##f. From the answer in d, what is the content of row 3 and row 4 What is its R code and its output?
 ```{r}
 df_temp[3:4, ]
 ```
+##g. From the answer in d, display the city with highest temperature and the city with the lowest temperature. What is its R code and its output?
 ```{r}
 # City with Highest Temperature
 df_temp[which.max(df_temp$Temperature), ]
@@ -59,24 +70,32 @@ df_temp[which.max(df_temp$Temperature), ]
 # City with Lowest Temperature
 df_temp[which.min(df_temp$Temperature), ]
 ```
+##2. Create a matrix of one to eight and eleven to fourteen with four columns and three rows.
+##a. What will be the R code for the #2 question and its result?
 ```{r}
 vector_data <- c(1:8, 11:14)
 mat_a <- matrix(vector_data, nrow = 3, ncol = 4)
 print(mat_a)
 ```
+##b. Multiply the matrix by two. What is its R code and its result?
 ```{r}
  mat_b <- mat_a * 2
 print(mat_b)
 ```
+##c. What is the content of row 2? What is its R code?
 ```{r}
  mat_a[2, ]
 ```
+##d. What will be the R code if you want to display the column 3 and column 4 in row 1
+and row 2? What is its output?
 ```{r}
  mat_a[1:2, 3:4]
 ```
+##e. What is the R code is you want to display only the columns in 2 and 3, row 3? What is its output?
 ```{r}
 mat_a[3, c(2, 3)]
 ```
+##f. What is the R code is you want to display only the columns 4? What is its output?
 ```{r}
 mat_a[, 4]
 ```
