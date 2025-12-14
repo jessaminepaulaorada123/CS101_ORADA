@@ -1,0 +1,149 @@
+---
+title: "RWorksheet_orada#4a.Rmd"
+author: "Jessamine Paula Orada"
+date: "2025-11-17"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+#1. The table below shows the data about shoe size and height. Create a data frame.
+#a. Describe the data.
+##The data, presented in Figure 1, is a collection of measurements related to shoe size and height from various respondents, along with their Gender.Variables:
+
+#Gender: A nominal categorical variable (or factor) with levels 'M' (Male) and 'F' (Female).
+
+#Shoe Size: A quantitative (discrete) variable, likely measured in standard shoe size units.
+
+#Height: A quantitative (continuous) variable, likely measured in centimeters or inches.
+
+#Data Type: This dataset is suitable for exploratory data analysis to examine the relationship between shoe size and height, and to compare these measurements across genders.
+
+
+
+#1.b. Create a subset by males and females with their corresponding shoe size and height.What its result? Show the R scripts.
+
+```{r}
+# Assuming the data is:
+Gender <- c("M", "F", "F", "M", "F", "M", "F", "M")
+Shoe_Size <- c(10, 7, 6, 11, 7, 12, 8, 10)
+Height <- c(178, 160, 165, 185, 168, 190, 170, 180)
+
+# Create the data frame
+household_data <- data.frame(Gender, Shoe_Size, Height)
+print(household_data)
+```
+
+#.1.cFind the mean of shoe size and height of the respondents. Write the R scripts and its result.
+```{r}
+# Subset for Males
+males_subset <- subset(household_data, Gender == "M")
+print(males_subset)
+
+# Subset for Females
+females_subset <- subset(household_data, Gender == "F")
+print(females_subset)
+```
+
+#d. Is there a relationship between shoe size and height? Why?
+```{r}
+# Calculate the mean of Shoe_Size
+mean_shoe_size <- mean(household_data$Shoe_Size)
+
+# Calculate the mean of Height
+mean_height <- mean(household_data$Height)
+
+# Print the results
+cat("Mean Shoe Size:", mean_shoe_size, "\n")
+cat("Mean Height:", mean_height, "\n")
+```
+
+#.2
+```{r}
+# Original character vector
+months_vector <- c("March","April","January","November","January",
+                   "September","October","September","November","August",
+                   "January","November","November","February","May","August",
+                   "July","December","August","August","September","November","February",
+                   "April")
+
+# Convert to a factor
+factor_months_vector <- factor(months_vector)
+
+# Print the factor vector
+print(factor_months_vector)
+```
+
+
+#3
+```{r}
+# Summary of the character vector
+summary_char <- summary(months_vector)
+print(summary_char)
+
+# Summary of the factor vector
+summary_factor <- summary(factor_months_vector)
+print(summary_factor)
+```
+
+#4
+```{r}
+# Create the character vector with repeated directions based on frequency
+factor_data <- c("East", 
+                 "West", "West", "West", "West",
+                 "North", "North", "North")
+
+# Apply the factor function with the required order of the level
+new_order_data <- factor(factor_data, levels = c("East","West","North"))
+
+# Print the result
+print(new_order_data)
+```
+
+#5.a
+```{r}
+#To import a CSV file (Comma Separated Values) using read.table():
+#read.table() is a general function. For CSV, we set sep="," and header=TRUE.
+#If the file were tab-separated, we would use sep="\t".
+data_imported <- read.table("import_march.csv", header = TRUE, sep = ",")
+```
+#5.b
+```{r}
+# R script to view the dataset
+View(data_imported)
+# or, for a console print
+head(data_imported)
+```
+
+#6
+```{r}
+exhaustive_search <- function(user_input) {
+  # 1. Check if the number is beyond the range of 1 to 50
+  if (user_input < 1 || user_input > 50) {
+    print("The number selected is beyond the range of 1 to 50")
+  } 
+  # 2. Check for the specific number 20
+  else if (user_input == 20) {
+    print("TRUE")
+  } 
+  # 3. Otherwise (within range 1-50 but not 20), display the input number
+  else {
+    print(user_input)
+  }
+}
+
+# Example 1: Randomly select a number (from 1 to 50) and display it
+random_num <- sample(1:50, 1)
+cat("The chosen number is:", random_num, "\n")
+exhaustive_search(random_num)
+
+# Example 2: Input is 20
+cat("\nInputting 20:\n")
+exhaustive_search(20)
+
+# Example 3: Input is beyond the range
+cat("\nInputting 60:\n")
+exhaustive_search(60)
+```
+
