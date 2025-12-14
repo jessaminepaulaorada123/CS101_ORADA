@@ -103,11 +103,13 @@ print(new_order_data)
 
 #5.a
 ```{r}
-#To import a CSV file (Comma Separated Values) using read.table():
-#read.table() is a general function. For CSV, we set sep="," and header=TRUE.
-#If the file were tab-separated, we would use sep="\t".
-data_imported <- read.table("import_march.csv", header = TRUE, sep = ",")
+# 5.a. Import the excel file into the Environment Pane using read.table() function.
+# The code assumes 'import_march.csv' is in the working directory.
+import_data <- read.table("import_march .csv", header = TRUE, sep = ",")
 ```
+
+
+
 #5.b
 ```{r}
 # R script to view the dataset
@@ -137,7 +139,10 @@ exhaustive_search <- function(user_input) {
 random_num <- sample(1:50, 1)
 cat("The chosen number is:", random_num, "\n")
 exhaustive_search(random_num)
+```
 
+
+```{r}
 # Example 2: Input is 20
 cat("\nInputting 20:\n")
 exhaustive_search(20)
@@ -146,4 +151,166 @@ exhaustive_search(20)
 cat("\nInputting 60:\n")
 exhaustive_search(60)
 ```
+
+
+##7
+```{r}
+# Available bill denominations in descending order
+bill_denominations <- c(1000, 500, 200, 100, 50)
+
+# Function to calculate the minimum number of bills
+calculate_minimum_bills <- function(price) {
+  # Input validation (must be a positive multiple of 50)
+  if (price <= 0 || price %% 50 != 0) {
+    return("Invalid price. Price must be a positive multiple of 50.")
+  }
+
+  remaining_price <- price
+  bill_count <- 0
+  
+  # Iterate through the denominations from largest to smallest
+  for (bill in bill_denominations) {
+    # Check how many of the current bill can be used
+    num_bills <- floor(remaining_price / bill)
+    
+    # Add the number of bills to the total count
+    bill_count <- bill_count + num_bills
+    
+    # Update the remaining price to be paid
+    remaining_price <- remaining_price - (num_bills * bill)
+    
+    # Optional: Display the breakdown (for verification)
+    # cat(num_bills, "x", bill, "pesos bills used.\n")
+    
+    # Optimization: If the remaining price is 0, we can stop
+    if (remaining_price == 0) {
+      break
+    }
+  }
+  
+  # Check if any price remains (shouldn't happen if input is a multiple of 50)
+  if (remaining_price > 0) {
+     # This part should ideally not be reached given the input constraint
+     return("Error: Remaining price after calculation.")
+  } else {
+    # Output the result as required
+    cat("Input Price:", price, "pesos\n")
+    cat("Minimum number of bills needed: ")
+    return(bill_count)
+  }
+}
+
+# Example Usage:
+# result_7a_1 <- calculate_minimum_bills(750)
+# print(result_7a_1)
+# result_7a_2 <- calculate_minimum_bills(1650)
+# print(result_7a_2)
+```
+
+
+##8.a
+```{r}
+# Create the vectors for the data frame
+Name <- c("Annie", "Thea", "Steve", "Hanna")
+Grade1 <- c(85, 65, 75, 95)
+Grade2 <- c(65, 75, 55, 75)
+Grade3 <- c(85, 90, 80, 100)
+Grade4 <- c(100, 90, 85, 90)
+
+# Create the dataframe
+df_scores <- data.frame(
+  Name = Name,
+  Grade1 = Grade1,
+  Grade2 = Grade2,
+  Grade3 = Grade3,
+  Grade4 = Grade4
+)
+
+# Print the R code and its output (the dataframe)
+print(df_scores)
+```
+##8.b
+```{r}
+# Calculate the sum of grades for each student and divide by 4 manually
+# Select only the grade columns
+grades_only <- df_scores[, c("Grade1", "Grade2", "Grade3", "Grade4")]
+
+# Calculate the average without rowMeans() or mean() by using rowSums() and division
+# Alternatively, using base R indexing and arithmetic manually:
+# row_averages <- (df_scores$Grade1 + df_scores$Grade2 + df_scores$Grade3 + df_scores$Grade4) / 4
+
+# Using apply for a more general approach (still avoids rowMeans/mean)
+row_averages <- apply(grades_only, 1, sum) / ncol(grades_only)
+# Note: 1 indicates rows, sum is the function applied, ncol(grades_only) is 4
+
+# Check which students have an average over 90
+for (i in 1:nrow(df_scores)) {
+  if (row_averages[i] > 90) {
+    cat(df_scores$Name[i], "’s average grade this semester is ", row_averages[i], ".\n", sep = "")
+  }
+}
+```
+
+```{r}
+# Check which students have an average strictly OVER 90
+for (i in 1:nrow(df_scores)) {
+  if (row_averages[i] > 90) { # Strict inequality
+    cat(df_scores$Name[i], "’s average grade this semester is ", row_averages[i], ".\n", sep = "")
+  }
+}
+```
+
+
+##8.c
+```{r}
+# Select only the grade columns
+grades_only <- df_scores[, c("Grade1", "Grade2", "Grade3", "Grade4")]
+
+# Calculate the column sums manually and divide by the number of students (4)
+# Use the colSums function and divide by nrow(df_scores)
+column_averages <- colSums(grades_only) / nrow(df_scores)
+
+# Iterate through the column averages (tests)
+for (j in 1:length(column_averages)) {
+  # Get the test number (n)
+  test_number <- j
+  # Check if the column average is less than 80
+  if (column_averages[j] < 80) {
+    # Output the result
+    cat("The ", test_number, "th test was difficult. (Average: ", column_averages[j], ")\n", sep = "")
+  }
+}
+```
+
+
+##8.d
+```{r}
+# Select only the grade columns
+grades_only <- df_scores[ , c("Grade1", "Grade2", "Grade3", "Grade4")]
+
+# Use the apply function with a custom function to find the maximum without using max()
+# This custom function simply compares elements to find the largest one.
+find_max_manual <- function(row_vector) {
+  current_max <- row_vector[1] # Start with the first element
+  for (grade in row_vector) {
+    if (grade > current_max) {
+      current_max <- grade
+    }
+  }
+  return(current_max)
+}
+
+# Apply the custom function to each row (1)
+highest_scores <- apply(grades_only, 1, find_max_manual)
+
+# Check which students have a highest score greater than 90
+for (i in 1:nrow(df_scores)) {
+  if (highest_scores[i] > 90) {
+    # Output the result
+    cat(df_scores$Name[i], "’s highest grade this semester is ", highest_scores[i], ".\n", sep = "")
+  }
+}
+```
+
+
 
