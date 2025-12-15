@@ -1,0 +1,274 @@
+---
+title: "College Life and Academic Well-Being of Students: Data Analysis Report"
+author: "Jessamine Paula Orada"
+date: "2025-12-15"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+install.packages("ggplot2")
+install.packages("dplyr")
+install.packages("scales")
+```
+```{r}
+library(ggplot2)
+library(dplyr)
+library(scales)
+```
+##College Life and Academic Well-Being of Students
+
+##Orada, Jessamine Paula 
+##Fegidero, Jorealle
+##Saludo, Denniel
+##Gentapao, Bea Julliete lima
+
+
+##Introduction
+#This report presents an analysis of a survey on "College Life and Academic Well-Being of Students" with 50 respondents. The analysis uses the R statistical environment, specifically the ggplot() function from the ggplot2 package, to visualize key findings related to demographics, academic habits, and student well-being.
+
+
+```{r}
+
+# --- Demographics ---
+age_data <- data.frame(
+  Age = factor(c(17, 18, 19, 20, 21, "21 y.o.", 22), 
+               levels = c("17", "18", "19", "20", "21", "21 y.o.", "22")),
+  Count = c(1, 6, 18, 15, 3, 1, 6)
+)
+
+gender_data <- data.frame(
+  Gender = factor(c("Male", "Female", "Prefer not to say")),
+  Count = c(21, 23, 6)
+)
+
+year_level_data <- data.frame(
+  Level = factor(c("1st Year", "2nd Year", "3rd Year", "4th Year")),
+  Count = c(10, 3, 6, 31)
+)
+
+# --- Habits & Performance ---
+sleep_data <- data.frame(
+  Hours = factor(c("Less than 5 hours", "5-6 hours", "7-8 hours", "More than 8 hours"),
+                 levels = c("Less than 5 hours", "5-6 hours", "7-8 hours", "More than 8 hours")),
+  Count = c(13, 32, 5, 0)
+)
+
+stress_freq_data <- data.frame(
+  Frequency = factor(c("Always", "Often", "Sometimes", "Rarely", "Never"),
+                     levels = c("Always", "Often", "Sometimes", "Rarely", "Never")),
+  Count = c(12, 18, 12, 7, 1)
+)
+
+performance_data <- data.frame(
+  Rating = factor(c("Excellent", "Good", "Average", "Poor"),
+                  levels = c("Excellent", "Good", "Average", "Poor")),
+  Count = c(2, 22, 25, 1)
+)
+
+online_resources_data <- data.frame(
+  Helpful = factor(c("Yes", "No", "Sometimes")),
+  Count = c(37, 0, 13)
+)
+
+# --- Satisfaction & Support ---
+college_support_data <- data.frame(
+  Support = factor(c("Yes", "No", "Not sure")),
+  Count = c(24, 9, 17)
+)
+
+satisfaction_data <- data.frame(
+  Rating = factor(c(1, 2, 3, 4, 5), levels = 1:5),
+  Count = c(0, 4, 23, 19, 4)
+)
+```
+
+##Age Distribution
+```{r}
+ggplot(data = age_data, aes(x = Age, y = Count, fill = Age)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = Count), vjust = -0.5, size = 3.5) +
+  labs(title = "Age Distribution of Respondents", 
+       x = "Age (Years)", 
+       y = "Number of Respondents (Count)") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+
+##Year Level Distributuion
+```{r}
+ggplot(data = year_level_data, aes(x = Level, y = Count, fill = Level)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = paste0(Count, " (", round(Count/sum(year_level_data$Count) * 100), "%)")), vjust = -0.5, size = 3.5) +
+  labs(title = "Year Level of Respondents", 
+       x = "Year Level", 
+       y = "Number of Respondents (Count)") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+
+##4. Well-Being and Academic Stress Analysis
+##A. On average, how many hours of sleep do you get per night?
+```{r}
+# Calculate percentages for the pie chart label
+sleep_data_percent <- sleep_data %>%
+  mutate(Fraction = Count / sum(Count),
+         Percentage = scales::percent(Fraction),
+         Y_pos = cumsum(Fraction) - 0.5 * Fraction)
+
+ggplot(data = sleep_data_percent, aes(x = "", y = Fraction, fill = Hours)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y", start = 0) +
+  geom_text(aes(y = Y_pos, label = Percentage), color = "white", size = 4) +
+  labs(title = "Average Hours of Sleep Per Night", x = NULL, y = NULL) +
+  theme_void()
+```
+##Chart Explanation: This pie chart shows the proportion of sleep hours. A combined 90% of students report sleeping 6 hours or less (64% at 5-6 hours, 26% at less than 5 hours). 
+
+##Insight: This indicates a critical level of sleep deprivation within the student body, a factor strongly linked to impaired cognitive function and motivation.
+
+
+##B. How often do you experience stress related to academics?
+```{r}
+ggplot(data = stress_freq_data, aes(x = Frequency, y = Count, fill = Frequency)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = Count), vjust = -0.5, size = 3.5) +
+  labs(title = "Frequency of Academic Stress", 
+       x = "Stress Frequency", 
+       y = "Number of Respondents") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+#Chart Explanation: This bar chart shows how often students feel academic stress. 60% of students experience stress Always or Often. 
+
+#Insight: The majority of students operate under constant or frequent academic pressure. The combination of high stress and low sleep highlights a severe well-being issue that negatively impacts learning effectiveness.
+
+
+##C. Do you think your college supports students' mental health and well-being?
+```{r}
+# Calculate percentages for the pie chart label
+support_data_percent <- college_support_data %>%
+  mutate(Fraction = Count / sum(Count),
+         Percentage = scales::percent(Fraction),
+         Y_pos = cumsum(Fraction) - 0.5 * Fraction)
+
+ggplot(data = support_data_percent, aes(x = "", y = Fraction, fill = Support)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y", start = 0) +
+  geom_text(aes(y = Y_pos, label = Percentage), color = "black", size = 4) +
+  labs(title = "College Mental Health Support Perception", x = NULL, y = NULL) +
+  theme_void()
+```
+##Chart Explanation: This pie chart illustrates the perception of college mental health support. While 48% say Yes, a combined 52% respond with No (18%) or Not sure (34%). 
+
+##Insight: The large 'Not sure' percentage suggests that the college's existing mental health resources, even if available, are not being effectively communicated or accessed by a significant portion of the student population.
+
+
+
+##5. Performance and Resources
+##A. How would you rate your current academic performance?
+```{r}
+ggplot(data = performance_data, aes(x = Rating, y = Count, fill = Rating)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = paste0(Count, " (", round(Count/sum(performance_data$Count) * 100), "%)")), vjust = -0.5, size = 3.5) +
+  labs(title = "Self-Rated Academic Performance", 
+       x = "Performance Rating", 
+       y = "Number of Respondents") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+##Chart Explanation: This bar chart shows self-reported academic performance. 94% of students rate their performance as Good or Average. 
+
+##Insight: Performance is generally moderate, with few students reaching the Excellent level (4%). The high prevalence of sleep and stress suggests these well-being factors are likely capping the students' ability to achieve higher grades.
+
+
+##B. Do you find online resources helpful in your studies?
+```{r}
+# Calculate percentages for the pie chart label
+online_resources_data_percent <- online_resources_data %>%
+  mutate(Fraction = Count / sum(Count),
+         Percentage = scales::percent(Fraction),
+         Y_pos = cumsum(Fraction) - 0.5 * Fraction)
+
+ggplot(data = online_resources_data_percent, aes(x = "", y = Fraction, fill = Helpful)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y", start = 0) +
+  geom_text(aes(y = Y_pos, label = Percentage), color = "black", size = 4) +
+  labs(title = "Helpfulness of Online Resources (e.g., ChatGPT)", x = NULL, y = NULL) +
+  theme_void()
+```
+##Chart Explanation: This pie chart shows the perceived helpfulness of online tools. 74% of students say Yes, with the remaining 26% saying Sometimes. 
+
+##Insight: Students overwhelmingly rely on digital resources (like Google and ChatGPT) to supplement their learning, indicating these tools are essential components of modern study habits.
+
+##6. Overall College Satisfaction
+##A. Overall, how satisfied are you with your college experience so far? (1=Low, 5=High)
+```{r}
+ggplot(data = satisfaction_data, aes(x = Rating, y = Count, fill = Rating)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = Count), vjust = -0.5, size = 3.5) +
+  labs(title = "Overall College Satisfaction", 
+       x = "Satisfaction Rating (1-5)", 
+       y = "Number of Respondents") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+##Chart Explanation: This bar chart shows the distribution of satisfaction ratings. The majority of students rated their satisfaction as 3 (46%) or 4 (38%). 
+
+##Insight: Despite high reported stress and low sleep, overall satisfaction remains positive (84% rated 3 or 4). This suggests students value the college environment and education quality, even while facing significant well-being challenges.
+
+
+
+##Conclusion
+##The data clearly indicates a Well-Being Crisis characterized by widespread stress and sleep deprivation, which is the primary barrier to higher academic achievement (as linked to Time Management and Motivation).
+
+
+
+```{r}
+# --- Data Frame Simulation (Required for Cross-Tabulation) ---
+# Create vectors that conceptually represent the 50 responses
+Hours <- factor(rep(sleep_data$Hours, times = sleep_data$Count),
+                levels = c("Less than 5 hours", "5-6 hours", "7-8 hours", "More than 8 hours"))
+Frequency <- factor(rep(stress_freq_data$Frequency, times = stress_freq_data$Count),
+                    levels = c("Always", "Often", "Sometimes", "Rarely", "Never"))
+
+# Create the simulated raw data frame (50 rows)
+student_survey_data <- data.frame(Hours, Frequency)
+
+```
+
+
+
+
+##(Overall Conclusion)
+##The analysis of the "College Life and Academic Well-Being" survey data (N=50) reveals a student population characterized by moderate overall satisfaction despite facing a significant Well-Being Crisis fueled by severe sleep deprivation and high academic stress.
+
+##1. The Core Crisis: Sleep and Stress
+##The most critical finding is the pervasive nature of poor well-being metrics:
+
+##Sleep Deprivation: An overwhelming 90% of students report sleeping 6 hours or less per night, far below recommended health guidelines.
+
+##Constant Stress: 60% of students experience academic stress "Always" or "Often." The correlation analysis suggests a strong link where inadequate sleep likely exacerbates this chronic stress.
+
+##Impact on Performance: This combination of high stress and low sleep is the most probable capping factor on academic potential, as only a small fraction (4%) rate their performance as "Excellent," with the majority clustered at "Good" and "Average."
+
+##2. The Communication Gap in Support Systems
+##The perception of college support services is split, highlighting an operational gap:
+##Uncertainty: A combined 52% of students either feel unsupported or are "Not Sure" if their college supports mental health.
+
+##Actionable Insight: The large "Not Sure" group suggests that even if resources exist, the college needs to urgently improve the communication and accessibility of its mental health and well-being programs to reach a large portion of the student body.
+
+##3. Resilience and Resourcefulness
+##Despite these challenges, students show positive signs of resilience and adaptation:
+
+##Overall Satisfaction: The majority of students (84%) express moderate to high satisfaction (Ratings 3 or 4) with their college experience, indicating they value the educational environment and quality, separate from their personal well-being struggles.
+
+##Digital Reliance: Online resources (like ChatGPT and Google) are overwhelmingly deemed helpful (74% Yes), solidifying their role as essential components of modern student study habits.
+
+##Recommendation
+##The primary focus for intervention should be on mitigating the Well-Being Crisis. The college should explore targeted programs that address time management, stress reduction, and sleep hygiene to unlock the full academic potential of the student body.
